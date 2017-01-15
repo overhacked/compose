@@ -35,6 +35,7 @@ if [ "$(pwd)" != '/' ]; then
     VOLUMES="-v $(pwd):$(pwd)"
 fi
 # Parse arguments, looking for -f or --file
+original_args="$@"
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
     VALUE=`echo $1 | awk -F= '{print $2}'`
@@ -45,6 +46,7 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+set -- $original_args
 
 if [ -n "$COMPOSE_FILE" ]; then
     compose_dir=$(realpath $(dirname $COMPOSE_FILE))
