@@ -41,6 +41,10 @@ while [ "$1" != "" ]; do
     VALUE=`echo $1 | awk -F= '{print $2}'`
     case $PARAM in
         -f | --file)
+            if [ -z "$VALUE" ]; then
+                shift
+                VALUE=$1
+            fi
             COMPOSE_FILE="$VALUE"
             ;;
     esac
