@@ -34,10 +34,21 @@ fi
 if [ "$(pwd)" != '/' ]; then
     VOLUMES="-v $(pwd):$(pwd)"
 fi
+# Parse arguments, looking for -f or --file
+while [ "$1" != "" ]; do
+    PARAM=`echo $1 | awk -F= '{print $1}'`
+    VALUE=`echo $1 | awk -F= '{print $2}'`
+    case $PARAM in
+        -f | --file)
+            COMPOSE_FILE="$VALUE"
+            ;;
+    esac
+    shift
+done
+
 if [ -n "$COMPOSE_FILE" ]; then
     compose_dir=$(realpath $(dirname $COMPOSE_FILE))
 fi
-# TODO: also check --file argument
 if [ -n "$compose_dir" ]; then
     VOLUMES="$VOLUMES -v $compose_dir:$compose_dir"
 fi
